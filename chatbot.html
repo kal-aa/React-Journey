@@ -27,12 +27,11 @@
         border-width: 1px;
         font-size: 15px;
         flex-grow: 1;
-        
       }
 
       .chat-input-container {
         display: flex;
-
+        margin-bottom: 60px;
       }
 
       .app-container {
@@ -42,17 +41,16 @@
         height: 100vh;
 
         display: flex;
-        flex-direction: column
+        flex-direction: column;
       }
 
       .chat-message-user {
         display: flex;
         justify-content: end;
         align-items: start;
-
       }
 
-      .chat-message-robot{
+      .chat-message-robot {
         display: flex;
         align-items: start;
       }
@@ -66,17 +64,20 @@
         max-width: 300px;
       }
 
-      .chat-message-profile{      
+      .chat-message-profile {
         width: 45px;
       }
 
       .chat-messages-container {
         flex-grow: 1;
+        margin-top: 20px;
+        overflow: scroll;
+        scrollbar-width: none;
       }
     </style>
   </head>
   <body>
-    <div class="js-container"></div>
+    <div id="js-container"></div>
 
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
@@ -133,7 +134,7 @@
         return (
           <div className="chat-input-container">
             <input
-              class="chat-input"
+              className="chat-input"
               placeholder="Send a message to Chatbot"
               size="30"
               onChange={saveInputText}
@@ -146,7 +147,7 @@
                 }
               }}
             />
-            <button class="send-button" onClick={sendMessage}>
+            <button className="send-button" onClick={sendMessage}>
               {isLoading ? "sending..." : "Send"}
             </button>
           </div>
@@ -155,22 +156,41 @@
 
       function ChatMessage({ message, sender }) {
         return (
-          <div className={sender === "user" ? 'chat-message-user' : 'chat-message-robot'}>
-            {sender === "user" && <img src={`./Images/user.png`} className="chat-message-profile" />}
+          <div
+            className={
+              sender === "user" ? "chat-message-user" : "chat-message-robot"
+            }
+          >
+            {sender === "user" && (
+              <img src={`./Images/user.png`} className="chat-message-profile" />
+            )}
             <div className="chat-message-text">{message}</div>
-            {sender === "robot" && <img src={`./Images/robot.png`} className="chat-message-profile" />}
+            {sender === "robot" && (
+              <img
+                src={`./Images/robot.png`}
+                className="chat-message-profile"
+              />
+            )}
           </div>
         );
       }
 
       function ChatMessages({ chatMessages }) {
+        const chatMessagesRef = React.useRef(null);
+        React.useEffect(() => {
+          const containerElem = chatMessagesRef.current;
+          if (containerElem) {
+            containerElem.scrollTop = containerElem.scrollHeight;
+          }
+        }, [chatMessages]);
+
         return (
-         <div className="chat-messages-container">
+          <div className="chat-messages-container" ref={chatMessagesRef}>
             {chatMessages.map((chatMessage, i) => {
               const { message, sender } = chatMessage;
               return <ChatMessage key={i} message={message} sender={sender} />;
             })}
-         </div>
+          </div>
         );
       }
 
@@ -193,7 +213,7 @@
         );
       }
 
-      const container = document.querySelector(".js-container");
+      const container = document.querySelector("#js-container");
       ReactDOM.createRoot(container).render(<App />);
     </script>
   </body>
