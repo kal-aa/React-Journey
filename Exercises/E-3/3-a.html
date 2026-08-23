@@ -2,6 +2,14 @@
 <html>
   <head>
     <title>React Basics</title>
+    <style>
+      .counter-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
@@ -14,31 +22,47 @@
     <script type="text/babel">
       function App() {
         const [count, setCount] = React.useState(0);
+        const intervalId = React.useRef(null);
+
+        const increment = () => {
+          setCount((prev) => prev + 1);
+        };
 
         return (
-          <>
-            <>
-              <Button count={count} setCount={setCount} />
-              <Button count={count} setCount={setCount} />
-              <button onClick={() => setCount(0)}>Reset</button>
-            </>
-          </>
+          <div className="counter-container">
+            <Button increment={increment} count={count} setCount={setCount} />
+            <button
+              onClick={() => {
+                setCount(0);
+                clearInterval(intervalId.current);
+              }}
+            >
+              Reset
+            </button>
+            <button
+              onClick={() => {
+                clearInterval(intervalId.current);
+                setCount(0);
+
+                intervalId.current = setInterval(() => {
+                  increment();
+                }, 1000);
+              }}
+            >
+              Auto Click
+            </button>
+          </div>
         );
       }
 
-      function Button({ count, setCount }) {
-        const button = (
-          <button
-            onClick={() => {
-              console.log("Clicked");
-              setCount(count + 1);
-            }}
-          >
-            Click {count} {count === 1 ? "time" : "times"}
-          </button>
+      function Button({ increment, count, setCount }) {
+        return (
+          <>
+            <button id="buttonElem" onClick={() => increment()}>
+              Click {count} {count === 1 ? "time" : "times"}
+            </button>
+          </>
         );
-
-        return button;
       }
 
       const container = document.querySelector(".js-container");
