@@ -1,0 +1,23 @@
+.app-container {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-text {
+  height: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.loading-spinner {
+  width: 25px;
+  height: 25px;
+  border-radius: 10px;
+  overflow: hidden;
+}
