@@ -22,8 +22,15 @@ export function ChatMessages({ chatMessages }) {
     <div className="chat-messages-container" ref={chatMessagesRef}>
       {chatMessages.length > 0 ? (
         chatMessages.map((chatMessage, i) => {
-          const { message, sender } = chatMessage;
-          return <ChatMessage key={i} message={message} sender={sender} />;
+          const { message, sender, timeStamp } = chatMessage;
+          return (
+            <ChatMessage
+              key={i}
+              message={message}
+              sender={sender}
+              timeStamp={timeStamp}
+            />
+          );
         })
       ) : (
         <p className="welcome-text">

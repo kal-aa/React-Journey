@@ -21,3 +21,9 @@
 .chat-message-profile {
   width: 45px;
 }
+
+.time-stamp {
+  font-size: 10px;
+  display: flex;
+  justify-content: left;
+}
