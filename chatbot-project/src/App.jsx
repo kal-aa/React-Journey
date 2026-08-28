@@ -5,7 +5,13 @@ import { ChatInput } from "./components/ChatInput";
 import { Chatbot } from "supersimpledev";
 
 function App() {
-  const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessages, setChatMessages] = useState(
+    JSON.parse(localStorage.getItem("messages")) || [],
+  );
+
+  useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(chatMessages));
+  }, [chatMessages]);
 
   useEffect(() => {
     Chatbot.addResponses({

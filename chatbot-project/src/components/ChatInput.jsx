@@ -79,6 +79,15 @@ export function ChatInput({ setChatMessages, chatMessages }) {
       <button className="send-button" onClick={sendMessage}>
         {isLoading ? "sending..." : "Send"}
       </button>
+      <button
+        className="clear-button"
+        onClick={() => {
+          localStorage.removeItem("messages");
+          setChatMessages([]);
+        }}
+      >
+        Clear
+      </button>
     </div>
   );
 }
