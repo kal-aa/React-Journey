@@ -4,6 +4,7 @@ import "./HomePage.css";
 export default function HomePage() {
   return (
     <>
+    <link rel="icon" type="image/svg+xml" href="https://supersimple.dev/images/home-favicon.png" />
       <title>Ecommerce Project</title>
       <Header />
 
