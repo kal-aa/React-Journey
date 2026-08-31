@@ -3,11 +3,11 @@
 import axios from "axios";
 import Header from "../components/Header";
 import "./HomePage.css";
-// import { useEffect, useState } from "react";
-import { products } from "../../starting-code/data/products";
+import { useEffect, useState } from "react";
+// import { products } from "../../starting-code/data/products";
 
 export default function HomePage() {
-  // const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
   // useEffect(() => {
   //   async function fetchProducts() {
@@ -19,9 +19,11 @@ export default function HomePage() {
   //   fetchProducts();
   // });
 
-  axios.get("http://localhost:3000/api/products").then((response) => {
-    console.log(response.data)
-  });
+  useEffect(() => {
+    axios.get("http://localhost:3000/api/products").then((response) => {
+      setProducts(response.data);
+    });
+  }, []);
 
   return (
     <>
