@@ -1,8 +1,23 @@
+"use server";
+
 import Header from "../components/Header";
 import "./HomePage.css";
-import { products } from "../../starting-code/data/products";
+import { useEffect, useState } from "react";
+// import { products } from "../../starting-code/data/products";
 
 export default function HomePage() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const response = await fetch("http://localhost:3000/api/products");
+      const data = await response.json();
+      setProducts(data);
+    }
+
+    fetchProducts();
+  });
+
   return (
     <>
       <link
