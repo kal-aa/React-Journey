@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
 
   // useEffect(() => {
   //   async function fetchProducts() {
@@ -20,9 +21,17 @@ export default function HomePage() {
   // });
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/products").then((response) => {
-      setProducts(response.data);
-    });
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/products`)
+      .then((response) => {
+        setProducts(response.data);
+      });
+
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/cart-items`)
+      .then((response) => {
+        setCart(response.data);
+      });
   }, []);
 
   return (
@@ -33,7 +42,7 @@ export default function HomePage() {
         href="https://supersimple.dev/images/home-favicon.png"
       />
       <title>Ecommerce Project</title>
-      <Header />
+      <Header cart={cart} />
 
       <div className="home-page">
         <div className="products-grid">
