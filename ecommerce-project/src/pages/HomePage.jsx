@@ -21,17 +21,13 @@ export default function HomePage() {
   // });
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/products`)
-      .then((response) => {
-        setProducts(response.data);
-      });
+    axios.get("/api/products").then((response) => {
+      setProducts(response.data);
+    });
 
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/cart-items`)
-      .then((response) => {
-        setCart(response.data);
-      });
+    axios.get("/api/cart-items").then((response) => {
+      setCart(response.data);
+    });
   }, []);
 
   return (
