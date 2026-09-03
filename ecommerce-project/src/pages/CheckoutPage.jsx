@@ -4,7 +4,11 @@ import "./CheckoutPage.css";
 export default function CheckoutPage() {
   return (
     <>
-    <link rel="icon" type="image/svg+xml" href="https://supersimple.dev/images/cart-favicon.png" />
+      <link
+        rel="icon"
+        type="image/svg+xml"
+        href="https://supersimple.dev/images/cart-favicon.png"
+      />
       <title>Checkout</title>
       <CheckoutHeader />
 
