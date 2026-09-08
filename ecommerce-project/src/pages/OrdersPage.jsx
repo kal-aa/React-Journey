@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Header from "../components/Header";
 import "./OrdersPage.css";
 import axios from "axios";
@@ -12,6 +12,8 @@ export default function OrdersPage({ cart }) {
     axios.get("/api/orders?expand=products").then((response) => {
       setOrders(response.data);
       console.log(response.data);
+      console.log(response.data[0].products);
+
     });
   }, []);
 
@@ -36,7 +38,7 @@ export default function OrdersPage({ cart }) {
                   <div className="order-header-left-section">
                     <div className="order-date">
                       <div className="order-header-label">Order Placed:</div>
-                      <div>{dayjs(order.TimeMs).format("MMMM D")}</div>
+                      <div>{dayjs(order.orderTimeMs).format("MMMM D")}</div>
                     </div>
                     <div className="order-total">
                       <div className="order-header-label">Total:</div>
@@ -54,21 +56,23 @@ export default function OrdersPage({ cart }) {
                   
                   {/* start here */}
 
-                  {order.products.map((product) => {
+                  {order.products.map((orderProduct) => {
+                    const product = orderProduct.product
+
                     return (
-                      <div key={product.id}>
+                      <Fragment key={orderProduct.productId}>
                         <div className="product-image-container">
-                          <img src="images/products/athletic-cotton-socks-6-pairs.jpg" />
+                          <img src={product.image} />
                         </div>
 
                         <div className="product-details">
                           <div className="product-name">
-                            Black and Gray Athletic Cotton Socks - 6 Pairs
+                            {product.name}
                           </div>
                           <div className="product-delivery-date">
-                            Arriving on: August 15
+                            Arriving on: {dayjs(orderProduct.estimatedDeliveryTimeMs).format('MMMM D')}
                           </div>
-                          <div className="product-quantity">Quantity: 1</div>
+                          <div className="product-quantity">Quantity: {orderProduct.quantity}</div>
                           <button className="buy-again-button button-primary">
                             <img
                               className="buy-again-icon"
@@ -87,7 +91,7 @@ export default function OrdersPage({ cart }) {
                             </button>
                           </a>
                         </div>
-                      </div>
+                      </Fragment>
                     );
                   })}
                 </div>
