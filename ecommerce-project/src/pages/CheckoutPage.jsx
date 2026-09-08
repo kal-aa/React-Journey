@@ -18,7 +18,6 @@ export default function CheckoutPage({ cart, setCart }) {
 
     axios.get("/api/payment-summary").then((response) => {
       setPaymentSummary(response.data);
-      console.log(response.data);
     });
   }, []);
 
