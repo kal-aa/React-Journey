@@ -38,11 +38,13 @@ export default function CheckoutPage({ cart, setCart }) {
         <div className="page-title">Review your order</div>
 
         <div className="checkout-grid">
-          <OrderSummary
-            deliveryOptions={deliveryOptions}
-            cart={cart}
-            setCart={setCart}
-          />
+          {deliveryOptions.length > 0 && (
+            <OrderSummary
+              deliveryOptions={deliveryOptions}
+              cart={cart}
+              setCart={setCart}
+            />
+          )}
 
           {paymentSummary && <PaymentSummary paymentSummary={paymentSummary} />}
         </div>
