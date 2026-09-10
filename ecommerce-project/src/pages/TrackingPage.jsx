@@ -1,42 +1,84 @@
-import { Link } from 'react-router';
-import Header from '../components/Header';
-import './TrackingPage.css';
+import { Link, useParams } from "react-router";
+import Header from "../components/Header";
+import "./TrackingPage.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import dayjs from "dayjs";
 
-export default function TrackingPage() {
-    return (
-        <>
-    <link rel="icon" type="image/svg+xml" href="https://supersimple.dev/images/tracking-favicon.png" />
+export default function TrackingPage({ cart }) {
+  const { orderId, productId } = useParams();
+  const [order, setOrder] = useState(null);
 
-        <Header/>
-        <div class="tracking-page">
-      <div class="order-tracking">
-        <Link class="back-to-orders-link link-primary" to="/orders">
-          View all orders
-        </Link>
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      const response = await axios.get(
+        `/api/orders/${orderId}?expand=products`,
+      );
+      setOrder(response.data);
+    };
 
-        <div class="delivery-date">Arriving on Monday, June 13</div>
+    fetchOrderData();
+  }, [orderId, productId]);
 
-        <div class="product-info">
-          Black and Gray Athletic Cotton Socks - 6 Pairs
-        </div>
+  if (!order) return null;
 
-        <div class="product-info">Quantity: 1</div>
+  const product = order.products.find(
+    (product) => product.productId === productId,
+  );
 
-        <img
-          class="product-image"
-          src="images/products/athletic-cotton-socks-6-pairs.jpg"
-        />
 
-        <div class="progress-labels-container">
-          <div class="progress-label">Preparing</div>
-          <div class="progress-label current-status">Shipped</div>
-          <div class="progress-label">Delivered</div>
-        </div>
 
-        <div class="progress-bar-container">
-          <div class="progress-bar"></div>
+
+  // There is something wrong here
+  const totalDeliveryTime = product.estimatedDeliveryTimeMs - order.orderTimeMs;
+  const timePassedMs = dayjs().valueOf() - order.orderTimeMs;
+
+  const deliveryPercent = (timePassedMs / totalDeliveryTime) * 100;
+  console.log(deliveryPercent);
+
+
+  
+
+  return (
+    <>
+      <link
+        rel="icon"
+        type="image/svg+xml"
+        href="https://supersimple.dev/images/tracking-favicon.png"
+      />
+
+      <Header cart={cart} />
+      <div className="tracking-page">
+        <div className="order-tracking">
+          <Link className="back-to-orders-link link-primary" to="/orders">
+            View all orders
+          </Link>
+
+          <div className="delivery-date">
+            Arriving on{" "}
+            {dayjs(product.estimatedDeliveryTimeMs).format("dddd, MMMM D")}
+          </div>
+
+          <div className="product-info">{product.product.name}</div>
+
+          <div className="product-info">Quantity: {product.quantity}</div>
+
+          <img className="product-image" src={product.product.image} />
+
+          <div className="progress-labels-container">
+            <div className="progress-label">Preparing</div>
+            <div className="progress-label current-status">Shipped</div>
+            <div className="progress-label">Delivered</div>
+          </div>
+
+          <div className="progress-bar-container">
+            <div
+              className="progress-bar"
+              style={{ width: `${deliveryPercent}%` }}
+            ></div>
+          </div>
         </div>
       </div>
-    </div></>
-    );
-};
+    </>
+  );
+}

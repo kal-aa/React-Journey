@@ -28,6 +28,7 @@ export default function OrderContainer({ order }) {
 
         {order.products.map((orderProduct) => {
           const product = orderProduct.product;
+          console.log("product:", product);
 
           return (
             <Fragment key={orderProduct.productId}>
@@ -54,7 +55,7 @@ export default function OrderContainer({ order }) {
               </div>
 
               <div className="product-actions">
-                <a href="/tracking">
+                <a href={`/tracking/${order.id}/${product.id}`}>
                   <button className="track-package-button button-secondary">
                     Track package
                   </button>
