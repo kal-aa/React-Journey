@@ -26,18 +26,11 @@ export default function TrackingPage({ cart }) {
     (product) => product.productId === productId,
   );
 
-
-
-
   // There is something wrong here
   const totalDeliveryTime = product.estimatedDeliveryTimeMs - order.orderTimeMs;
   const timePassedMs = dayjs().valueOf() - order.orderTimeMs;
 
   const deliveryPercent = (timePassedMs / totalDeliveryTime) * 100;
-  console.log(deliveryPercent);
-
-
-  
 
   return (
     <>
@@ -55,7 +48,7 @@ export default function TrackingPage({ cart }) {
           </Link>
 
           <div className="delivery-date">
-            Arriving on{" "}
+            {deliveryPercent > 100 ? "Arrived on" : "Arriving on"}{" "}
             {dayjs(product.estimatedDeliveryTimeMs).format("dddd, MMMM D")}
           </div>
 
