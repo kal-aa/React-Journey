@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import CheckoutHeader from "./CheckoutHeader";
 import axios from "axios";
 import "./CheckoutPage.css";
 import OrderSummary from "./OrderSummary";
 import PaymentSummary from "./PaymentSummary";
 
-export default function CheckoutPage({ cart, setCart }) {
+export default function CheckoutPage({ cart, loadCart }) {
   const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
 
@@ -15,13 +15,19 @@ export default function CheckoutPage({ cart, setCart }) {
         "/api/delivery-options?expand=estimatedDeliveryTime",
       );
       setDeliveryOptions(response.data);
-
-      response = await axios.get("/api/payment-summary");
-      setPaymentSummary(response.data);
     };
 
     fetchCheckoutData();
   }, []);
+
+  useEffect(() => {
+    const fetchCheckoutData = async () => {
+      const response = await axios.get("/api/payment-summary");
+      setPaymentSummary(response.data);
+    };
+
+    fetchCheckoutData();
+  }, [cart]);
 
   return (
     <>
@@ -42,7 +48,7 @@ export default function CheckoutPage({ cart, setCart }) {
             <OrderSummary
               deliveryOptions={deliveryOptions}
               cart={cart}
-              setCart={setCart}
+              loadCart={loadCart}
             />
           )}
 
