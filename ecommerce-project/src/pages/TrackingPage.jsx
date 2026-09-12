@@ -18,7 +18,7 @@ export default function TrackingPage({ cart }) {
     };
 
     fetchOrderData();
-  }, [orderId, productId]);
+  }, [orderId]);
 
   if (!order) return null;
 
@@ -32,6 +32,10 @@ export default function TrackingPage({ cart }) {
 
   const deliveryPercent = (timePassedMs / totalDeliveryTime) * 100;
 
+  let status = "";
+  if (deliveryPercent < 33) status = "isPreparing";
+  else if (deliveryPercent < 100) status = "isShipped";
+  else status = "isDelivered";
   return (
     <>
       <link
@@ -59,9 +63,27 @@ export default function TrackingPage({ cart }) {
           <img className="product-image" src={product.product.image} />
 
           <div className="progress-labels-container">
-            <div className="progress-label">Preparing</div>
-            <div className="progress-label current-status">Shipped</div>
-            <div className="progress-label">Delivered</div>
+            <div
+              className={`progress-label ${
+                status === "isPreparing" && "current-status"
+              }`}
+            >
+              Preparing
+            </div>
+            <div
+              className={`progress-label ${
+                status === "isShipped" && "current-status"
+              }`}
+            >
+              Shipped
+            </div>
+            <div
+              className={`progress-label ${
+                status === "isDelivered" && "current-status"
+              }`}
+            >
+              Delivered
+            </div>
           </div>
 
           <div className="progress-bar-container">
