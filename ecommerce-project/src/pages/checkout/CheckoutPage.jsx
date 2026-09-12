@@ -1,4 +1,4 @@
-import { useEffect, useEffectEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import CheckoutHeader from "./CheckoutHeader";
 import axios from "axios";
 import "./CheckoutPage.css";
