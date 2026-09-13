@@ -1,11 +1,19 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import "./Header.css";
+import { useState } from "react";
 
 export default function Header({ cart }) {
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
   let totalQuantity = 0;
   cart.forEach((cartItem) => {
     totalQuantity += cartItem.quantity;
   });
+
+  const findMatch = async () => {
+    navigate(`/?search=${search}`);
+  };
 
   return (
     <div className="header">
@@ -17,9 +25,18 @@ export default function Header({ cart }) {
       </div>
 
       <div className="middle-section">
-        <input className="search-bar" type="text" placeholder="Search" />
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") findMatch();
+          }}
+        />
 
-        <button className="search-button">
+        <button className="search-button" onClick={findMatch}>
           <img className="search-icon" src="images/icons/search-icon.png" />
         </button>
       </div>

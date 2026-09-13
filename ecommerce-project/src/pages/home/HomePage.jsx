@@ -3,10 +3,13 @@ import Header from "../../components/Header";
 import "./HomePage.css";
 import { useEffect, useState } from "react";
 import ProductsGrid from "./ProductsGrid";
+import { useSearchParams } from "react-router";
 // import { products } from "../../starting-code/data/products";
 
 export default function HomePage({ cart, loadCart }) {
   const [products, setProducts] = useState([]);
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search");
 
   // useEffect(() => {
   //   async function fetchProducts() {
@@ -20,12 +23,16 @@ export default function HomePage({ cart, loadCart }) {
 
   useEffect(() => {
     const getHomeData = async () => {
-      const response = await axios.get("/api/products");
+      const url = search
+        ? `/api/products?search=${encodeURIComponent(search)}`
+        : "/api/products";
+
+      const response = await axios.get(url);
       setProducts(response.data);
     };
 
     getHomeData();
-  }, []);
+  }, [search]);
 
   return (
     <>
