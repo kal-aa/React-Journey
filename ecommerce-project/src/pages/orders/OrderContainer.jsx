@@ -1,8 +1,24 @@
 import dayjs from "dayjs";
 import { formatMoney } from "../../utils/money";
 import { Fragment } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
-export default function OrderContainer({ order }) {
+export default function OrderContainer({ order, loadCart }) {
+  const navigate = useNavigate();
+
+  const buyAgain = async (productId) => {
+    console.log("hi");
+    await axios.post(`/api/cart-items`, {
+      productId,
+      quantity: 1,
+    });
+
+    await loadCart();
+
+    navigate("/checkout");
+  };
+
   return (
     <div className="order-container">
       <div className="order-header">
@@ -28,7 +44,6 @@ export default function OrderContainer({ order }) {
 
         {order.products.map((orderProduct) => {
           const product = orderProduct.product;
-          console.log("product:", product);
 
           return (
             <Fragment key={orderProduct.productId}>
@@ -45,7 +60,10 @@ export default function OrderContainer({ order }) {
                 <div className="product-quantity">
                   Quantity: {orderProduct.quantity}
                 </div>
-                <button className="buy-again-button button-primary">
+                <button
+                  className="buy-again-button button-primary"
+                  onClick={() => buyAgain(product.id)}
+                >
                   <img
                     className="buy-again-icon"
                     src="images/icons/buy-again.png"

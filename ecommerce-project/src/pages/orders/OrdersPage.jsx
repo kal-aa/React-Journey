@@ -4,7 +4,7 @@ import "./OrdersPage.css";
 import axios from "axios";
 import OrderContainer from "./OrderContainer";
 
-export default function OrdersPage({ cart }) {
+export default function OrdersPage({ cart, loadCart }) {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -31,7 +31,13 @@ export default function OrdersPage({ cart }) {
 
         <div className="orders-grid">
           {orders.map((order) => {
-            return <OrderContainer key={order.id} order={order} />;
+            return (
+              <OrderContainer
+                key={order.id}
+                order={order}
+                loadCart={loadCart}
+              />
+            );
           })}
         </div>
       </div>
