@@ -21,12 +21,9 @@ export default function CartItemContainer({
     await loadCart();
   };
 
-  ("START HERE, NOT UPDATING PROPELY");
-
   const updateCartQuantity = async () => {
     await axios.put(`/api/cart-items/${cartItem.productId}`, {
       quantity,
-      deliveryOptionId: cartItem.deliveryOptionId,
     });
 
     await loadCart();
@@ -58,14 +55,17 @@ export default function CartItemContainer({
             </span>
             <span
               className="update-quantity-link link-primary"
-              onClick={() => setIsUpdateQuantity(true)}
+              onClick={() => {
+                setQuantity(cartItem.quantity);
+                setIsUpdateQuantity(true);
+              }}
             >
               {isUpdateQutntity ? (
                 <input
                   type="number"
                   style={{ width: "20%" }}
                   value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
                   onKeyDown={async (e) => {
                     if (e.key === "Enter") {
                       await updateCartQuantity();
