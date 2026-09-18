@@ -24,7 +24,7 @@ export default function PaymentSummary({ paymentSummary, loadCart }) {
 
       <div className="payment-summary-row">
         <div>Shipping &amp; handling:</div>
-        <div className="payment-summary-money">
+        <div className="payment-summary-money" data-testid="shipping-money">
           {formatMoney(paymentSummary.shippingCostCents)}
         </div>
       </div>
@@ -38,20 +38,21 @@ export default function PaymentSummary({ paymentSummary, loadCart }) {
 
       <div className="payment-summary-row">
         <div>Estimated tax (10%):</div>
-        <div className="payment-summary-money">
+        <div className="payment-summary-money" data-testid="tax-money">
           {formatMoney(paymentSummary.taxCents)}
         </div>
       </div>
 
       <div className="payment-summary-row total-row">
         <div>Order total:</div>
-        <div className="payment-summary-money">
+        <div className="payment-summary-money" data-testid="total-money">
           {formatMoney(paymentSummary.totalCostCents)}
         </div>
       </div>
 
       <button
         className="place-order-button button-primary"
+        data-testid="place-order-button"
         onClick={createOrder}
       >
         Place your order
