@@ -16,4 +16,7 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: "../ecommerce-backend/dist",
+  },
 });
