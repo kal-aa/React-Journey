@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "run-s build:frontend buld:backend",
+    "build:frontend": "vite build",
+    "build:backend": "npm --prefix ../ecommerce-backend run zip",
     "lint": "eslint .",
     "preview": "vite preview"
   },
