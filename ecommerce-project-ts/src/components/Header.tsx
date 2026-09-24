@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router";
 import "./Header.css";
 import { useState } from "react";
 
-type HeaderProps = {
+export type HeaderProps = {
   cart: {
     productId: string;
     quantity: number;

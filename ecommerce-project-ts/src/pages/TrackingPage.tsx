@@ -1,13 +1,40 @@
 import { Link, useParams } from "react-router";
-import Header from "../components/Header";
+import Header, { type HeaderProps } from "../components/Header";
 import "./TrackingPage.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 
-export default function TrackingPage({ cart }) {
+export type Product = {
+  id: string;
+  name: string;
+  image: string;
+  keywords: string[];
+  rating: {
+    stars: number;
+    count: number;
+  };
+};
+
+export type OrderProduct = {
+  productId: string;
+  quantity: number;
+  estimatedDeliveryTimeMs: number;
+  product: Product;
+};
+
+export type Order = {
+  id: string;
+  orderTimeMs: number;
+  totalCostCents: number;
+  products: OrderProduct[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export default function TrackingPage({ cart }: HeaderProps) {
   const { orderId, productId } = useParams();
-  const [order, setOrder] = useState(null);
+  const [order, setOrder] = useState<Order | null>(null);
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -22,12 +49,15 @@ export default function TrackingPage({ cart }) {
 
   if (!order) return null;
 
-  const product = order.products.find(
+  const orderProduct = order.products.find(
     (product) => product.productId === productId,
   );
 
+  if (!orderProduct) return null;
+
   // There is something wrong here
-  const totalDeliveryTime = product.estimatedDeliveryTimeMs - order.orderTimeMs;
+  const totalDeliveryTime =
+    orderProduct.estimatedDeliveryTimeMs - order.orderTimeMs;
   const timePassedMs = dayjs().valueOf() - order.orderTimeMs;
 
   const deliveryPercent = (timePassedMs / totalDeliveryTime) * 100;
@@ -53,14 +83,14 @@ export default function TrackingPage({ cart }) {
 
           <div className="delivery-date">
             {deliveryPercent > 100 ? "Arrived on" : "Arriving on"}{" "}
-            {dayjs(product.estimatedDeliveryTimeMs).format("dddd, MMMM D")}
+            {dayjs(orderProduct.estimatedDeliveryTimeMs).format("dddd, MMMM D")}
           </div>
 
-          <div className="product-info">{product.product.name}</div>
+          <div className="product-info">{orderProduct.product.name}</div>
 
-          <div className="product-info">Quantity: {product.quantity}</div>
+          <div className="product-info">Quantity: {orderProduct.quantity}</div>
 
-          <img className="product-image" src={product.product.image} />
+          <img className="product-image" src={orderProduct.product.image} />
 
           <div className="progress-labels-container">
             <div
